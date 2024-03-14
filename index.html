@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>古数学应用程序包</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="./font/icofont.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400&display=swap">
+	<style>
+		*{
+			padding: 0;
+			margin:0;
+/*			margin是盒子最外边的部分，打出0一般就是让浏览器自动归位*/
+			font-family: "Source Sans Pro",sans-serif;
+		}
+/*		magrin,border,padding,content(width,highth)*/
+/*		shell元素为相对定位，flex布局*/
+		.shell{
+			background-image:url("背景图.png");
+			 background-size: cover; /* 覆盖整个容器 */
+            background-position: center; /* 图片居中显示 */
+            background-repeat: no-repeat; /* 不重复图片 */
+			position: relative;
+/*				relative是相对于本身位置的定位移动*/
+			display: flex;
+/*			dispaly ：可以把子元素自动更新成block形式，把子元素都变成每一个块级元素。
+	align-item :开启X轴元素对齐方式
+	justify-content : 开启Y轴对齐方式*/
+			justify-content:center;
+/*			项目在主轴上的对齐方式*/
+			align-items: center;
+			min-height: 100vh;
+			width:100vw;
+			height:100vh;
+			margin:0;
+			padding:0;
+			box-sizing:border-box;
+/*			有边缘的盒子*/
+/*			means:RGB+alpha
+			改了一下决定用AI生成的，把RGBA删了*/
+		}
+			.shell .shell_slider .item {
+            width: 100vw; /* 设置每个项目的宽度为视口宽度 */
+				margin: 0 auto;}
+			
+
+		
+/*		button为flex布局*/
+/*		flex布局是不跟随窗口移动的固定盒子*/
+		.button{
+			position: relative;
+/*			还是相对位移*/
+			justify-content: space-around;
+			align-items: center;
+			width: 380px;
+			position: absolute;
+/*			abosolute绝对位移要建立在有相对位移（relative）的基础上，相对位移就是绝对的父系*/
+			left:50%;
+/*			指button这个posion将会在abosulute上照原来向左移动50%*/
+			transform: translateX(-50%);
+			bottom:-80px;
+/*				jusify-content中的三个分类：1.space-around:两边间隔比中间间隔小半个
+				2.space-evenly:两边间隔与中间间隔相等
+				3.space-between：两边没有间隔，中间间隔相等*/
+		}
+		.prev,
+		.next{
+/*			transition是鼠标悬停时的过渡动画
+			transition一共有5个相关属性：
+			1.transition-property：元素属性
+			2.trans-duration：持续时长
+			3.transition-timing-func：动画类型
+			4.transition-delay：延迟效果
+			5。transition：含以上*/
+			transition: transform 0.25s ease;
+			z-index:99999;
+			bottom: 5px;
+		}
+		.prev i,
+		.next i{
+			font-size: 90px;
+			color: #fff;
+			cursor: pointer;
+/*			鼠标光标形状*/
+			text-shadow: 0 0 10px #fff;
+/*			文字阴影，分别为：x、y、大小、rgb*/
+		}
+		.shell_body{
+			width:100%;
+/*			transform scale:缩放*/
+/*			`transform: scale(.55)`表示对元素进行缩放变换，将其沿着水平和垂直方向同时缩放。这意味着元素将在水平和垂直方向上均匀地缩小到原始尺寸的55%。在这种情况下，缩放是均匀的，因此不涉及特定的轴。*/
+			padding: :20px 0 150px 0;
+/*			上 右 下 左*/
+		}
+		.shell_slider{
+			position: relative;
+			transition: transform 1s ease-in-out;
+			background: transparent;
+		}
+		.item{
+			position: relative;
+			float:left;
+			margin: 0 20px;
+			width:100%;
+		}
+		.frame:after{
+			content: "";
+			position: absolute;
+			bottom: -16%;
+			width: 100%;
+			background: #ffffff1c;
+			box-shadow: 0px 0px 15px 5px #ffffff1c;
+			transform: rotateX(90deg) translate3d(0px,-20px,0px);
+		}
+		.box{
+			display: flex;
+			flex-direction: column;
+/*			flex布局父项：
+			1.flex-direction:方向
+			2.justify-content:设置主轴排序
+			3.flex-wrap：换行
+			4.align-content：侧轴子元素多行排列方式
+			5.align-itms：侧轴子元素单行排列方式
+			6.flex-flow：方向+换行*/
+/*			flex-direction+column：just 居中*/
+			justify-content: center;
+			align-items:center;
+			position: absolute;
+			width: 80%;
+			height: 100%;
+			border: 4px solid#fff;
+			perspective: 1000px;
+/*			景深*/
+			transform-style: preserve-3d;
+			margin: :0 auto;
+			text-align:center
+/*			3D变换模式为保留3D效果 */
+		}
+		.box h1,
+		.box span{
+			color: #fff;
+			transform:translateZ(20px);
+		}
+		.box h1{
+			text-shadow: 0 0 30px #1f05b4;
+			font-size: 100px;
+		}
+		.box span{
+			position: absolute;
+			bottom: 20px;
+			padding: 0 25px;
+			text-shadow: 0 0 10px #1f05b4;
+		}
+		.font,
+		.left,
+		.right{
+			box-shadow: 0 0 50px #ffffff;
+			background-size: cover;
+		}
+		.right,
+		.left{
+			top:0;
+			width:60px;
+			backface-visibility:hidden;
+/*			backface-visibility 是一个CSS属性，用于控制元素的背面是否可见。它主要用于在进行3D转换时控制元素的背面可见性。
+			visible：表示元素的背面可见。背面将正常渲染并显示在屏幕上。
+hidden：表示元素的背面不可见。背面将被隐藏，不会显示在屏幕上（这是默认值）*/
+		}
+		.left{
+			left:0;
+			border-left-width: 5px;
+			transform: matrix3d(1px,0,-60px)rotateY(-90deg);
+			transform-origin: 0%;
+		}
+		.right{
+			right: 0;
+			border-right-width: 5px;
+			transform: translate3d(-1px,0,-60px)rotateY(90deg);
+			transform-origin:100% 
+		}
+		/* 其他样式保持不变 */
+
+.item .frame {
+    perspective: 1500px;
+    transform-style: preserve-3d;
+}
+
+.item .frame .box {
+    transform: rotateY(0deg);
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+}
+
+.item:hover .box {
+    transform: rotateY(-20deg); /* 调整以获取更好的3D效果 */
+}
+.box {
+            width: 80%; /* 根据需要调整宽度 */
+            margin: 0 auto; /* 中心对齐 */
+            text-align: center; /* 文字居中 */
+        }
+
+        /* 将图片尺寸调整为自动以保持其宽高比 */
+        .box img {
+            max-width: 100%; /* 图片宽度最大为容器宽度 */
+            height: auto; /* 高度自动 */
+        }
+/* 其他样式保持不变 */
+
+	</style>
+	</head>
+<body>
+    <!-- 轮播图结构 -->
+    <div class="shell">
+        <div class="shell_body">
+            <div class="button">
+                <div class="prev"><i class="fas fa-backward"></i></div>
+                <div class="next"><i class="fas fa-forward"></i></div>
+            </div>
+            <div class="shell_slider">
+				<div class="item">
+					<div class="frame">
+						<a href="gyf.mp4" class="box front" target="_blank">
+							<h1><img src="人物.png" width="1209" height="550" alt=""/>数学人物</h1>
+							<span>点击进入数学视频网站观看“数学人物”视频</span>
+						</a>
+						<div class="box left"></div>
+						<div class="box right"></div>
+					</div>
+				</div>
+				<div class="item">
+					<div class="frame">
+						<a href="xxj.mp4" class="box front" target="_blank">
+							<h1><img src="物件.png" width="1053" height="688" alt=""/> 数学物件</h1>
+							<span>点击进入跑酷游戏观看“数学物件”视频</span>
+						</a>
+						<div class="box left"></div>
+						<div class="box right"></div>
+					</div>
+				</div>
+				<div class="item">
+					<div class="frame">
+						<a href="szj.mp4" class="box front" target="_blank">
+							<h1><img src="定理.png" width="3111" height="1590" alt=""/>数学定理</h1>
+							<span>点击进入闯关游戏观看“数学定理”视频</span>
+						</a>
+						<div class="box left"></div>
+						<div class="box right"></div>
+					</div>
+				</div>
+				<div class="box left"></div>
+				<div class="box right"></div>
+			</div>
+		</div>
+	</div>
+	</body>
+<script>
+	//实现一个图片轮播效果,通过document.getElementsByClassName('item')获取到所有具有item类名的元素，并将它们存储在items变量中。
+	// 然后，通过一个循环遍历每个item元素。在循环中，首先获取当前的item元素，然后通过getElementsByClassName方法获取到该item下的frame、front、left和right元素，并将它们分别存储在frame、frontBox、leftBox和rightBox变量中。
+    // 接下来，通过设置frontBox、leftBox和rightBox的style.backgroundImage属性，将背景图片设置为'url(./img/' + (i + 1).toString().padStart(2, '0') + '.jpg)'，其中(i + 1).toString().padStart(2, '0')表示将循环变量i加1后转换为字符串，并在前面补0，以保证图片的文件名格式正确。
+    // 接着，定义了一个立即执行函数，并在函数内部进行了一些操作。首先，通过document.getElementsByClassName('shell')[0]获取到具有shell类名的元素，并将其存储在shell变量中。然后，通过shell.getElementsByClassName方法获取到该shell元素下的shell_slider、item、prev和next元素，并将它们分别存储在slider、items、prevBtn和nextBtn变量中。
+    // 接下来，定义了一些变量，包括width、height、totalWidth、margin、currIndex、interval和intervalTime。width和height分别表示每个item的宽度和高度，totalWidth表示所有item的总宽度，margin表示item的外边距，currIndex表示当前显示的item的索引，interval表示定时器的ID，intervalTime表示定时器的时间间隔。
+    // 然后，定义了init函数，该函数用于初始化一些操作。在该函数中，首先调用resize函数调整大小，然后调用move函数将显示的item移动到中间位置，接着调用bindEvents函数绑定事件，最后调用timer函数启动定时器。
+    // 接着，定义了resize函数，该函数用于在窗口大小变化时调整大小。在该函数中，首先计算出新的width和height，然后根据计算结果设置slider的宽度，以及每个item的宽度和高度。
+    // 接下来，定义了bindEvents函数，该函数用于绑定事件。在该函数中，首先绑定了窗口大小变化时调用resize函数的事件，然后绑定了点击prev按钮和next按钮时调用prev函数和next函数的事件。
+    // 最后，在立即执行函数的末尾，调用了init函数来初始化页面，并定义了move、timer、prev和next函数。其中，move函数用于移动shell到指定的item，timer函数用于启动定时器，prev函数用于切换到上一个item，next函数用于切换到下一个item。
+	//获取所有item元素
+	var items = document.getElementsByClassName('item');
+    // 循环遍历每个item 
+    for (var i = 0; i < items.length; i++) {
+        // 获取当前item 
+        var item = items[i];
+        var frame = item.getElementsByClassName('frame')[0];
+        var frontBox = frame.getElementsByClassName('front')[0];
+        var leftBox = frame.getElementsByClassName('left')[0];
+        var rightBox = frame.getElementsByClassName('right')[0];
+		frontBox.style.backgroundImage ='url(./img/' + (i + 1).toString().padStart(2, '0') + '.jpg)';
+        leftBox.style.backgroundImage = 'url(./img/' + (i + 1).toString().padStart(2, '0') + '.jpg)';
+        rightBox.style.backgroundImage = 'url(./img/' + (i + 1).toString().padStart(2, '0') + '.jpg)';
+    }
+    (function () {
+        "use strict";
+        var shell = document.getElementsByClassName('shell')[0];
+        var slider = shell.getElementsByClassName('shell_slider')[0];
+        var items = shell.getElementsByClassName('item');
+        var prevBtn = shell.getElementsByClassName('prev')[0];
+        var nextBtn = shell.getElementsByClassName('next')[0];
+        // 定义变量 
+        var width, height, totalWidth, margin = 20,
+            currIndex = 0,
+            interval, intervalTime = 3000;
+        function init() {
+            // 初始化函数 
+            resize();
+            move(Math.floor(items.length / 2));
+            bindEvents();
+            timer();
+        }
+        function resize() {
+            // 窗口大小变化时调整大小 
+            width = Math.max(window.innerWidth * .20, 275);
+            height = window.innerHeight * .5;
+            totalWidth = width * items.length;
+            // 设置slider宽度 
+            slider.style.width = totalWidth + "px";
+            // 设置每个item的宽度和高度 
+            for (var i = 0; i < items.length; i++) {
+                let item = items[i];
+                item.style.width = (width - (margin * 2)) + "px";
+                item.style.height = height + "px";
+            }
+        }
+        function bindEvents() {
+            // 窗口大小变化时调整大小 
+            window.onresize = resize;
+            // 点击prev按钮切换item 
+            prevBtn.addEventListener('click', () => { prev(); });
+            nextBtn.addEventListener('click', () => { next(); });
+        }
+        init();
+        function move(index) {
+            // 移动shell到指定的item 
+            if (index < 1) index = items.length;
+            if (index > items.length) index = 1;
+            currIndex = index;
+            // 遍历所有item 
+            for (var i = 0; i < items.length; i++) {
+                let item = items[i],
+                    box = item.getElementsByClassName('frame')[0];
+                if (i == (index - 1)) {
+                    // 当前item添加active类并设置3D效果 
+                    item.classList.add('item--active');
+                    box.style.transform = "perspective(1200px)";
+                } else {
+                    // 其他item移除active类并设置3D效果 
+                    item.classList.remove('item--active');
+                    box.style.transform = "perspective(1200px) rotateY(" + (i < (index - 1) ? 40 : -40) + "deg)";
+                }
+            }
+            // 移动slider 
+            slider.style.transform = "translate3d(" + ((index * -width) + (width / 2) + window.innerWidth / 2) + "px, 0, 0)";
+            // 设置body背景图片 
+            var frontBox = items[index - 1].getElementsByClassName('front')[0];
+            document.body.style.backgroundImage = frontBox.style.backgroundImage;
+        }
+        function timer() {
+            // 定时器，自动切换shell 
+            clearInterval(interval);
+            interval = setInterval(() => {
+                move(++currIndex);
+            }, intervalTime);
+        }
+        // 切换item 
+        function prev() {
+            move(--currIndex);
+            timer();
+        }
+        function next() {
+            move(++currIndex);
+            timer();
+        }
+    })();
+</script>
+	
+	</script>
+</html>
